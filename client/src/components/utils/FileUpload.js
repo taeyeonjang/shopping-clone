@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import axios from 'axios';
 import Dropzone from 'react-dropzone';
 import { Icon } from 'antd';
 
 function FileUpload() {
+
+    const [Images, setImages] = useState([])
 
     const dropHandler = (files) => {
 
@@ -17,7 +19,7 @@ function FileUpload() {
         axios.post('/api/product/image', formData, config)
         .then(response => {
             if(response.data.success){
-
+                setImages([...Images, response.data.filePath] )
             } else {
                 alert('파일정보를 서버에서 받는데 실패하였습니다.')
             }
@@ -26,7 +28,7 @@ function FileUpload() {
     }
 
   return (
-    <div >
+    <div style={{ display:'flex', justifyContent:'space-between'}}>
         <Dropzone onDrop={dropHandler}>
             {({getRootProps, getInputProps}) => (
 
@@ -35,11 +37,17 @@ function FileUpload() {
                            {...getRootProps()}>
                     <input {...getInputProps()} />
                     <Icon type="plus" style={{ fontSize: '3rem' }} />
-
                 </div>
-
             )}
         </Dropzone>
+
+        <div style={{ display: 'flex', width: '350px', height: '240px', overflowX: 'scroll'}}>
+                {Images.map((image, index)=> (
+                    <div key={index}>
+                    <img style={{ minWidth:'300px', width:'300px', height:'240px'}} src={`http://localhost:5100/${image}`}/>
+                    </div>
+                ))}
+        </div>
     </div>
   )
 }
