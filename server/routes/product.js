@@ -42,4 +42,21 @@ const multer = require('multer');
          
     })
 
+    router.post('/products', (req, res) => {
+        //product db정보 모두 가져오기.
+        let limit = req.body.limit ? parseInt(req.body.limit) : 100;
+        let skip = req.body.skip ? parseInt(req.body.skip) : 0;
+
+        Product.find()
+        .populate('writer')
+        .skip(skip)
+        .limit(limit)
+        .exec((err, productInfo) => {
+            if(err) res.status(400).json({ success:false })
+            return res.status(200).json({ 
+                success: true, productInfo, 
+                postSize:productInfo.length })
+        })
+    })
+
 module.exports = router;
