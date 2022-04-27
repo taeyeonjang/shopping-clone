@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button, Form, Input } from 'antd';
 import FileUpload from '../../utils/FileUpload';
 import './UploadPage.css'; 
+import Axios from 'axios';
 
 
 const { TextArea } = Input;
@@ -16,12 +17,13 @@ const Continents = [
   {key:7, value:"Antarctica"},
 ]
 
-function UploadPage() {
+function UploadPage(props) {
 
   const [Title, setTitle] = useState("");
   const [Des, setDes] = useState("");
   const [Price, setPrice] = useState(0);
   const [Continent, setContinent] = useState(1)
+  const [Images, setImages] = useState([]);
 
   const onTitleChange = (event) => {
     setTitle(event.currentTarget.value)
@@ -39,19 +41,44 @@ function UploadPage() {
     setContinent(event.currentTarget.value)
   }
 
-  const onButton = () => {
-    console.log(Title, Des, Price)
+  const onSumbit = () => {
+      if(!Title || !Des || !Price || !Continent || !Images){
+      return alert(' 모두 작성해주세요!')
+      }
+
+      const body = {
+        writer: props.user.userData._id,
+        title: Title,
+        description: Des,
+        price: Price,
+        images: Images,
+        continents: Continent
+      }
+
+      Axios.post("/api/product/save", body)
+      .then(response => {
+        if(response.data.success){
+          alert('upload 성공')
+          props.history.push('/')
+        } else {
+          alert('upload 에러')
+        }
+      })
   }
 
+  const updateImages = (newImage) => {
+    setImages(newImage)
+  }
+  
   
 
   return (
     <div className="div" >
       <h2 level={2} className="title">Upload Travel Product</h2>
 
-      <Form>
+      <Form onSubmitCapture={onSumbit}>
 
-      <FileUpload />
+      <FileUpload refreshFunction={updateImages} />
 
 
         <label>Title<br/>
@@ -74,7 +101,7 @@ function UploadPage() {
   ))}
         </select>
 
-        <Button onClick={onButton}type='primary'>Submit</Button>
+        <Button htmlType="submit" type='primary'>Submit</Button>
 
 
       </Form>
