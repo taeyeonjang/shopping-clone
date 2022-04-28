@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Card, Row, Col, Button } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import ImageSlider from '../../utils/ImageSlider';
+import CheckBox from './Section/CheckBox';
+import { continents } from './Section/datas';
 
 
 function LandingPage() {
@@ -11,8 +13,10 @@ function LandingPage() {
     const [Skip, setSkip] = useState(0)
     const [Limit, setLimit] = useState(8)
     const [PostSize, setPostSize] = useState(0);
-    
-    console.log(PostSize)
+    const [Filters, setFilters] = useState({
+        continents: [],
+        price: []
+    })
 
 
     useEffect(() => {
@@ -72,16 +76,67 @@ function LandingPage() {
         </Card>
         </Col>
     })
+
+    const showFilterResult = (filters) => {
+            //여기서는 filters값인 [1, 2]이런걸 이용해서 axios 해주면 대지안을'까?
+            //body값을 다시 만들어서 axios로 보내주면댐,!
+            
+            let body = {
+                skip: 0,
+                limit: Limit,
+                filters: filters
+                
+            }
+
+            getProducts(body)
+            setSkip(0)
+
+    }
+
+    const handleFilters = (filters, category) => {
+
+
+        const newFilters = { ...Filters }
+            //새로운 Filters State 일단 만든다.
+
+        
+           newFilters[category] = filters
+
+           
+           // handleFilters로 들어온 [1, 2, 3]을 newfilters에 저장 
+            //그럼 newfilters에는 Filters에는 init state가 continent 와 price가 있으니깐
+            // {continents: Array(2), price: Array(0)} 두개체크했다면 이런식으로
+
+           
+            //지금 체크한 그 데이터를 이용해서 axios하기 위해 다른 함수로 또 넘긴다
+            // 지금들어가있는 값은 Filters 에 {continents: Array(2), price: Array(0)}
+            // 이런게 들어가있음.
+
+           showFilterResult(newFilters)
+           
+
+           //
+
+    }
     
     return (
         <div style={{ width: '75%', margin: '3rem auto' }}>
+            <h2 style={{display:'flex', justifyContent:'center'}}>오늘 뭐묵지</h2>
+
+            {/*checkBox*/}
             
+            <CheckBox continents={continents} handleFilters={filters => handleFilters(filters, "continents")}/>
+        
+
+
+
+            {/*renderCards*/} 
         <Row gutter={[16, 16]}>
             {renderCards}
         </Row>
              <br/>
              {PostSize >= Limit &&
-             <div style={{display:'flex', justifyContent:'center'}}>
+             <div style={{ display: 'flex', justifyContent: 'center' }}>
              <Button onClick={loadMoreButton}>더보기</Button>
              </div>}
         

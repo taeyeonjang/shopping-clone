@@ -47,7 +47,18 @@ const multer = require('multer');
         let limit = req.body.limit ? parseInt(req.body.limit) : 100;
         let skip = req.body.skip ? parseInt(req.body.skip) : 0;
 
-        Product.find()
+        let findArgs = {};
+        
+        for(let key in req.body.filters){
+            //key 값은 continents, price 
+            if(req.body.filters[key].length > 0){
+                // checkbox 체크한게 하나라도있다면 참이되니깐 
+                findArgs[key] = req.body.filters[key];
+            }
+        }
+        
+
+        Product.find(findArgs)
         .populate('writer')
         .skip(skip)
         .limit(limit)
