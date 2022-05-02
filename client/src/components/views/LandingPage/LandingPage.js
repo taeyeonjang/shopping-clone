@@ -4,7 +4,11 @@ import { Card, Row, Col, Button } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import ImageSlider from '../../utils/ImageSlider';
 import CheckBox from './Section/CheckBox';
-import { continents } from './Section/datas';
+import { continents, price } from './Section/datas';
+import RadioBox from './Section/RadioBox';
+import SearchBox from './Section/SearchBox';
+
+
 
 
 function LandingPage() {
@@ -17,6 +21,7 @@ function LandingPage() {
         continents: [],
         price: []
     })
+    const [SearchTerm, setSearchTerm] = useState("")
 
 
     useEffect(() => {
@@ -89,8 +94,21 @@ function LandingPage() {
             }
 
             getProducts(body)
-            setSkip(0)
+            {/*setSkip(0)*/}
 
+    }
+
+    const handlePrice = (value) => {
+
+        const data = price;
+        let array = [];
+
+        for (let key in data) {
+            if(data[key]._id === parseInt(value, 10)){
+            array = data[key].array
+            }
+        }
+        return array;
     }
 
     const handleFilters = (filters, category) => {
@@ -102,6 +120,16 @@ function LandingPage() {
         
            newFilters[category] = filters
 
+
+
+
+
+           if(category === 'price'){
+               let priceValues = handlePrice(filters)
+               newFilters[category] = priceValues
+           }
+
+           
            
            // handleFilters로 들어온 [1, 2, 3]을 newfilters에 저장 
             //그럼 newfilters에는 Filters에는 init state가 continent 와 price가 있으니깐
@@ -113,20 +141,50 @@ function LandingPage() {
             // 이런게 들어가있음.
 
            showFilterResult(newFilters)
+           setFilters(newFilters)
            
 
            //
 
     }
+
+    const refreshFunction = (newSearchTerm) => {
+        setSearchTerm(newSearchTerm)
+ 
+        let body = {
+            skip: 0,
+            limit: Limit,
+            filters: Filters,
+            searchTerm: SearchTerm
+            
+        }
+    
+        getProducts(body)
+
+    }
+
     
     return (
         <div style={{ width: '75%', margin: '3rem auto' }}>
             <h2 style={{display:'flex', justifyContent:'center'}}>오늘 뭐묵지</h2>
 
             {/*checkBox*/}
+            <Row gutter={[16, 16]}>
+                <Col lg={12} >
+                    <CheckBox continents={continents} handleFilters={filters => handleFilters(filters, "continents")}/>
+                </Col>
+
+                <Col lg={12} xs={24}>
+                    <RadioBox price={price} handleFilters={filters => handleFilters(filters, "price")} />
+                </Col>
+            </Row>
             
-            <CheckBox continents={continents} handleFilters={filters => handleFilters(filters, "continents")}/>
         
+        {/* Search */}
+        <SearchBox 
+            refreshFunction={refreshFunction}
+        />
+
 
 
 
@@ -136,7 +194,7 @@ function LandingPage() {
         </Row>
              <br/>
              {PostSize >= Limit &&
-             <div style={{ display: 'flex', justifyContent: 'center' }}>
+             <div style={{display:'flex', justifyContent:'center'}}>
              <Button onClick={loadMoreButton}>더보기</Button>
              </div>}
         

@@ -70,7 +70,6 @@ function UploadPage(props) {
     setImages(newImage)
   }
   
-  
 
   return (
     <div className="div" >

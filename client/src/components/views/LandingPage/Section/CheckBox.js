@@ -20,7 +20,7 @@ function CheckBox(props) {
             newChecked.splice(currentIndex, 1)
         }
         setChecked(newChecked)
-        props.handleFilters(newChecked)
+         props.handleFilters(newChecked)
     }
 
     
@@ -37,7 +37,7 @@ function CheckBox(props) {
    
   return (
     <div>
-        <Collapse style={{width:'50%', marginBottom:'1rem', marginRight:'1rem'}}>
+        <Collapse style={{marginBottom:'1rem', marginRight:'1rem'}}>
         <Panel header="Continents" key="1">
             {renderContinents()} 
         </Panel>
