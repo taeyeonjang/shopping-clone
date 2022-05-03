@@ -48,7 +48,6 @@ const multer = require('multer');
         let skip = req.body.skip ? parseInt(req.body.skip) : 0;
         let term = req.body.searchTerm; 
 
-        console.log(term)
         let findArgs = {};
         
         for(let key in req.body.filters){
@@ -96,8 +95,25 @@ const multer = require('multer');
             })
         }
 
-
+        
        
     })
+
+    router.get('/products_by_id', (req, res) => {
+
+        let type = req.query.type
+        let productId = req.query.id
+            
+        Product.find({ _id: productId })
+            .populate('writer') 
+            .exec((err, product) => {
+                if(err) return res.status(400).send(err)
+                return res.status(200).send({ success: true, product})
+            })        
+
+    })
+
+    
+
 
 module.exports = router;

@@ -73,7 +73,7 @@ function LandingPage() {
        /*
        <img style={{width:'100%', maxHeight: '150px'}} src={`http://localhost:5100/${product.images[0]}`} alt="coverImg"/>
        */     
-    cover={<ImageSlider images={product.images}/>}
+    cover={<a href={`/product/${product._id}`}><ImageSlider images={product.images}/></a>}
     >
             <Meta  
                 title={product.title}
@@ -117,20 +117,13 @@ function LandingPage() {
         const newFilters = { ...Filters }
             //새로운 Filters State 일단 만든다.
 
-        
            newFilters[category] = filters
-
-
-
-
 
            if(category === 'price'){
                let priceValues = handlePrice(filters)
                newFilters[category] = priceValues
            }
 
-           
-           
            // handleFilters로 들어온 [1, 2, 3]을 newfilters에 저장 
             //그럼 newfilters에는 Filters에는 init state가 continent 와 price가 있으니깐
             // {continents: Array(2), price: Array(0)} 두개체크했다면 이런식으로
@@ -150,6 +143,7 @@ function LandingPage() {
 
     const refreshFunction = (newSearchTerm) => {
         setSearchTerm(newSearchTerm)
+        
  
         let body = {
             skip: 0,
@@ -158,9 +152,9 @@ function LandingPage() {
             searchTerm: SearchTerm
             
         }
-    
-        getProducts(body)
 
+        
+        getProducts(body)
     }
 
     
@@ -181,9 +175,11 @@ function LandingPage() {
             
         
         {/* Search */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
         <SearchBox 
             refreshFunction={refreshFunction}
         />
+        </div>
 
 
 
