@@ -33,8 +33,9 @@ app.use('/api/product', require('./routes/product'));
 
 //use this to show the image you have in node js server to client (react js)
 //https://stackoverflow.com/questions/48914987/send-image-path-from-node-js-express-server-to-react-client
-//ㅁㄴㅇㄹㅁㄴㅇㄹ app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static('uploads'));
 
+app.use(express.static(path.join(__dirname, '../client/build')));
 // Serve static assets if in production
 if (process.env.NODE_ENV === "production") {
 
@@ -44,7 +45,7 @@ if (process.env.NODE_ENV === "production") {
 
   // index.html for all page routes    html or routing and naviagtion
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
+    res.sendFile(path.join(__dirname +"../client/build/index.html"));
   });
 }
 
