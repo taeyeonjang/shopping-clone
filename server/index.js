@@ -7,8 +7,8 @@ const mongoose = require("mongoose");
 const path = require("path");
 
 
-app.get("/", (req, res) => {
-  res.send("asdlkfjasdkf")
+app.use("/sss", (req, res) => {
+  res.json({"asdlkfjasdkf":'asdfasdf'})
 })
 
 app.use(express.urlencoded({extended: true}));
@@ -33,7 +33,7 @@ app.use('/api/product', require('./routes/product'));
 
 //use this to show the image you have in node js server to client (react js)
 //https://stackoverflow.com/questions/48914987/send-image-path-from-node-js-express-server-to-react-client
-app.use('/uploads', express.static('uploads'));
+//ㅁㄴㅇㄹㅁㄴㅇㄹ app.use('/uploads', express.static('uploads'));
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === "production") {
