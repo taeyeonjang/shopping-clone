@@ -8,9 +8,6 @@ import { continents, price } from './Section/datas';
 import RadioBox from './Section/RadioBox';
 import SearchBox from './Section/SearchBox';
 
-
-
-
 function LandingPage() {
 
     const [Products, setProducts] = useState([]);
