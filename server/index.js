@@ -4,9 +4,12 @@ const cors = require('cors')
 const cookieParser = require("cookie-parser");
 const config = require("./config/key");
 const mongoose = require("mongoose");
-
 const path = require("path");
 
+
+app.get("/", (req, res) => {
+  res.json({'asdlkfjasdkf': "asdfasdf"})
+})
 
 app.use(express.urlencoded({extended: true}));
 app.use('/uploads', express.static('uploads'));
