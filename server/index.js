@@ -8,7 +8,7 @@ const path = require("path");
 
 
 app.get("/", (req, res) => {
-  res.json({'asdlkfjasdkf': "asdfasdf"})
+  res.send("asdlkfjasdkf")
 })
 
 app.use(express.urlencoded({extended: true}));
