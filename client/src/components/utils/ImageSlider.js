@@ -3,6 +3,7 @@ import { Carousel } from 'antd';
 
 function ImageSlider(props) {
   
+  
   return (
       <div>
     <Carousel autoplay>
@@ -10,7 +11,7 @@ function ImageSlider(props) {
         {props.images.map((image, index)=> (
             <div key={index}>
                 <img style={{width:'100%', maxHeight:'9rem'}} 
-                src={`http://localhost:5100/${image}`} alt="slideImg"/>
+                src={process.env.NODE_ENV === 'development' ? `http://localhost:5100/${image}` : `http://https://aqueous-ravine-65081.herokuapp.com/${image}`} alt="slideImg"/>
             </div>
         ))}
    

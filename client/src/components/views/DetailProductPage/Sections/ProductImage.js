@@ -13,8 +13,8 @@ function ProductImage(props) {
         
             props.image.images.map(item => {
             images.push({
-                original: `http://localhost:5100/${item}`,
-                thumbnail: `http://localhost:5100/${item}`
+                original: process.env.NODE_ENV === 'development' ? `http://localhost:5100/${item}` : `http://https://aqueous-ravine-65081.herokuapp.com/${item}`,
+                thumbnail: process.env.NODE_ENV === 'development' ? `http://localhost:5100/${item}` : `http://https://aqueous-ravine-65081.herokuapp.com/${item}`
             })
         })
 

@@ -6,7 +6,7 @@ function UserCardBlock(props) {
     const renderCartImage = (images) => {
         if(images.length > 0){
             let image = images[0]
-            return `http://localhost:5100/${image}`
+            return process.env.NODE_ENV === 'development' ? `http://localhost:5100/${image}` : `http://https://aqueous-ravine-65081.herokuapp.com/${image}`
         }
     }
 
